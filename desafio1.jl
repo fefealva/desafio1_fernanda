@@ -5,6 +5,7 @@ tabela = CSV.read("C:\\Users\\Fernanda\\Desktop\\Testes Julia\\LAMPS\\tabela_des
 function estima_e_plota_os_ativos_e_a_reta_otima(tabela:: DataFrame, num_linha_ate_onde_vai_rodar::Integer, λ::Integer, M::Integer, K::Integer, ativoj::Integer)
     carga = tabela[1:num_linha_ate_onde_vai_rodar, 4:end]
     lin, col= size(carga)
+
     x = Vector{Int64}(undef, lin) #criando um vetor x que irá representar a escala de tempo
     y = Matrix(carga)#vetor do valor da carga
     for i=1:lin
@@ -27,11 +28,11 @@ function estima_e_plota_os_ativos_e_a_reta_otima(tabela:: DataFrame, num_linha_a
 
     val_reta_otima = JuMP.value.(τ)
 
-    f = plot(x[1:num_linha_ate_onde_vai_rodar], y[1:num_linha_ate_onde_vai_rodar, ativoj], size=(2500,1300), width=3)
+    graf = plot(x[1:num_linha_ate_onde_vai_rodar], y[1:num_linha_ate_onde_vai_rodar, ativoj], size=(2500,1300), width=3)
     plot!(x[1:num_linha_ate_onde_vai_rodar], val_reta_otima[1:num_linha_ate_onde_vai_rodar, ativoj], width=3)
-    return x, y, val_reta_otima, f
+    return val_reta_otima, graf
 
 end
 
-val_reta_otima, f = estima_e_plota_os_ativos_e_a_reta_otima(tabela, 40, 5000, 10^5, 5, 3)
-f
+val_reta_otima, graf = estima_e_plota_os_ativos_e_a_reta_otima(tabela, 40, 5000, 10^5, 5, 3)
+graf
